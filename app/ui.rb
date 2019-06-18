@@ -11,6 +11,7 @@ def getplayername
         User.create(name: name)
     end
 end 
+
 def menu(user)
     puts "Make your selection (1-5):"
     puts "1. Start New Game"
@@ -43,6 +44,8 @@ def menu(user)
         end
     end
 end
+
+# Prompts the user to select a difficulty level between 1-5
 def select_difficulty(user)
     puts "Make your selection (1-5):"
     difstr_arr = ["Easy","Medium","Hard","Expert","Master"]
@@ -56,8 +59,9 @@ def select_difficulty(user)
         case input.to_i
         when 1..5
             intdif = input.to_i
-            puts "would have started with #{difstr_arr[intdif-1]}"
-            #start_game(user, intdif)
+            word = select_word(intdif)
+            current_sesh = GameSession.create(user_id: user.id, word_id: word.id)
+            current_sesh.start_game
             break
         else
             puts "Error, #{input} is not 1-5, try again"
@@ -65,6 +69,23 @@ def select_difficulty(user)
         end
     end
 end
+
+# selects a random word from the library based on the difficulty level chosen by the user.  Code Credit: https://hashrocket.com/blog/posts/rails-quick-tips-random-records
+def select_word(dif_lvl)
+    case dif_lvl
+    when 1 # easy difficulty
+        word = Word.limit(1).order("RANDOM()").where(difficulty: 0..1000).first
+    when 2 # medium difficulty
+        word = Word.limit(1).order("RANDOM()").where(difficulty: 1001..100000).first
+    when 3 # hard difficulty
+        word = Word.limit(1).order("RANDOM()").where(difficulty: 100001..200000).first
+    when 4 # expert difficulty
+        word = Word.limit(1).order("RANDOM()").where(difficulty: 200001..400000).first
+    when 5 # master difficulty
+        word = Word.limit(1).order("RANDOM()").where(difficulty: 400001..Word.maximum(:difficulty)).first
+    end
+end
+
 def view_leaderboard 
     GameSession.all
     binding.pry

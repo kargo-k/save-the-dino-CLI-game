@@ -10,10 +10,9 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-
 ActiveRecord::Schema.define(version: 20190618173430) do
 
-  create_table "gamesessions", force: :cascade do |t|
+  create_table "game_sessions", force: :cascade do |t|
     t.integer "user_id"
     t.integer "word_id"
     t.boolean "win"
@@ -23,12 +22,9 @@ ActiveRecord::Schema.define(version: 20190618173430) do
     t.string "name"
   end
 
-
   create_table "words", force: :cascade do |t|
     t.string  "word"
-    t.float   "frequency"
     t.integer "difficulty"
-
   end
 
 end
