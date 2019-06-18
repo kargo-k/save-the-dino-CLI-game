@@ -2,4 +2,5 @@ require_relative '../config/environment'
 
 
 
-puts "HELLO WORLD"
+i = "HELLO WORLD"
+binding.pry
