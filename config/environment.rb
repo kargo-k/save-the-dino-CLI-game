@@ -1,7 +1,10 @@
 require 'bundler'
 require 'rest-client'
 require 'json'
-Bundler.require
+require 'require_all'
 
-ActiveRecord::Base.establish_connection(adapter: 'sqlite3', database: 'db/development.db')
+Bundler.require
+require_all 'app'
+
+DB = ActiveRecord::Base.establish_connection(adapter: 'sqlite3', database: 'db/hangman.db')
 require_all 'lib'
