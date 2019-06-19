@@ -1,11 +1,14 @@
 def welcome
+    system('clear')
     puts "Hey, thanks for hanging my man."
-    puts "ahhhhhhhhhhhhh"
+    puts "ASCII GOES HERE"
 end
 def getplayername
     puts "Enter your username:"
-    puts "Type EXIT to exit:"
+    puts "Type EXIT to exit: \n\n"
+    print ">> "
     name = gets.chomp
+    system('clear')
     if name.downcase == "exit"
         end_program
         return nil
@@ -14,6 +17,7 @@ def getplayername
     else
         User.create(name: name)
     end
+
 end 
 
 def menu(user)
@@ -23,9 +27,12 @@ def menu(user)
     puts "Make your selection (1-5):"
     puts "1. Start New Game"
     puts "2. View Leaderboard"
-    puts "3. Change your Username"
-    puts "4. Delete your Username and Exit"
-    puts "5. Exit"
+    puts "3. View your Records"
+    puts "4. Change your Username"
+    puts "5. Delete your Username and Exit"
+    puts "6. Exit\n\n"
+    print ">> "
+
     input = gets.chomp
 
     loop do
@@ -37,13 +44,17 @@ def menu(user)
             view_leaderboard(user)
             break
         when 3
-            user.update_username
+            system('clear')
+            self_records(user)
             break
         when 4
-            user.delete_user
-            end_program
+            user.update_username
             break
         when 5
+            user.delete_user
+            break
+        when 6
+            system('clear')
             end_program
             break
         else
@@ -61,7 +72,8 @@ def select_difficulty(user)
     puts "2. #{difstr_arr[1]}"
     puts "3. #{difstr_arr[2]}"
     puts "4. #{difstr_arr[3]}"
-    puts "5. #{difstr_arr[4]}"
+    puts "5. #{difstr_arr[4]}\n\n"
+    print ">> "
     input = gets.chomp
     loop do
         case input.to_i
@@ -122,8 +134,28 @@ def view_leaderboard(user)
             puts "#{ordered_array[i][0].name} won #{ordered_array[i][1]}% of their games over the course of #{ftotal[ordered_array[i][0]]} games" 
         end
     end
-    puts "Press Enter to Continue."
+    puts "Press Enter to Continue..."
     gets.chomp
+    system('clear')
+    menu(user)
+end
+def self_records(user)
+
+    arrselftotal = GameSession.all.select do |game|
+        game.user_id == user.id
+    end
+    arrselfwin = arrselftotal.select do |game| 
+        game.win == true
+    end
+    percent = arrselfwin.length.to_f/arrselftotal.length * 100
+    if arrselftotal.length > 0
+        puts "#{user.name} won #{percent}% of their games over the course of #{arrselftotal.length} games"
+    else
+        puts "#{user.name} has not played any games!"
+    end
+    puts "Press Enter to Continue..."
+    gets.chomp
+    system('clear')
     menu(user)
 end
 
