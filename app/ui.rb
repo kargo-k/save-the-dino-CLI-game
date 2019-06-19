@@ -11,7 +11,7 @@ def welcome
 end
 def getplayername
     puts "Enter your username:"
-    puts "Type EXIT to exit: \n\n"
+    puts "To exit the game, enter EXIT. \n\n"
 
     print ">> "
     name = gets.chomp
@@ -39,30 +39,30 @@ def menu(user)
     puts "3. View your Records"
     puts "4. Change your Username"
     puts "5. Delete your Username and Exit"
-    puts "6. Exit\n\n"
+    puts "To exit the game, enter EXIT.\n\n"
     print ">> "
 
     input = gets.chomp
-
+    caseput = input.downcase
     loop do
-        case input.to_i
-        when 1
+        case input
+        when "1"
             select_difficulty(user)
             break
-        when 2
+        when "2"
             view_leaderboard(user)
             break
-        when 3
+        when "3"
             system('clear')
             self_records(user)
             break
-        when 4
+        when "4"
             user.update_username
             break
-        when 5
+        when "5"
             user.delete_user
             break
-        when 6
+        when "exit"
             system('clear')
             end_program
             break
@@ -76,6 +76,7 @@ end
 
 # Prompts the user to select a difficulty level between 1-5
 def select_difficulty(user)
+    system('clear')
     puts "Make your selection (1-5):"
     difstr_arr = ["Easy","Medium","Hard","Expert","Master"]
     puts "1. #{difstr_arr[0]}"
@@ -139,11 +140,21 @@ def view_leaderboard(user)
     ordered_array = winpercenthash.sort_by {|k,v| v}.reverse
     if ordered_array.length < 5
         for i in 0..ordered_array.length-1 
-            puts "#{ordered_array[i][0].name} won #{ordered_array[i][1]}% of their games over the course of #{ftotal[ordered_array[i][0]]} games" 
+            puts "#{ordered_array[i][0].name} won #{ordered_array[i][1].round(2)}% of their games over the course of #{ftotal[ordered_array[i][0]]} games" 
+            username = ordered_array[i][0].name
+            percent = ordered_array[i][1].round(2)
+            numgames = ftotal[ordered_array[i][0]]
+            forindex = i
+            indexmax = ordered_array.length-1
+            print_table(username, percent, numgames, forindex, indexmax)
         end
     else
         for i in 0..4
-            puts "#{ordered_array[i][0].name} won #{ordered_array[i][1]}% of their games over the course of #{ftotal[ordered_array[i][0]]} games" 
+            username = ordered_array[i][0].name
+            percent = ordered_array[i][1].round(2)
+            numgames = ftotal[ordered_array[i][0]]
+            forindex = i
+            print_table(username, percent, numgames, forindex, 4) 
         end
     end
     puts "Press Enter to Continue..."
@@ -161,9 +172,72 @@ def self_records(user)
     end
     percent = arrselfwin.length.to_f/arrselftotal.length * 100
     if arrselftotal.length > 0
-        puts "#{user.name} won #{percent}% of their games over the course of #{arrselftotal.length} games"
+        username = user.name
+        percent = percent.round(2)
+        numgames = arrselftotal.length
+        percent = percent.to_s
+        numgames = numgames.to_s
+        i = 0
+        name = ""
+        line_name = ""
+        percentw = ""
+        line_percent = ""
+        line_games = ""
+        gamesw = ""
+        s_username = "Username"
+        s_percent = "Win %"
+        s_games = "Total"
+        s_name = ""
+        s_percentw = ""
+        s_gamesw = ""
+        for i in 0..10
+            if s_username[i] != nil
+                s_name << s_username[i]
+            else
+                s_name << " "
+            end
+            if username[i] != nil
+                name << username[i]
+            else
+                name << " "
+            end
+            line_name << "═"
+        end
+
+        for i in 0..5
+            if s_percent[i] != nil
+                s_percentw << s_percent[i]
+            else
+                s_percentw << " "
+            end
+            if percent[i] != nil
+                percentw << percent[i]
+            else
+                percentw << " "
+            end
+            line_percent << "═"
+        end
+        for i in 0..5
+            if s_games[i] != nil
+                s_gamesw << s_games[i]
+            else
+                s_gamesw << " "
+            end
+            if numgames[i] != nil
+                gamesw << numgames[i]
+            else
+                gamesw << " "
+            end
+            line_games << "═"
+        end
+        puts "╔═" + line_name + "═╦═" + line_percent + "═╦═" + line_games + "═╗"
+        puts "║ " + s_name +      " ║ " +    s_percentw +  " ║ " + s_gamesw +     " ║"
+        puts "╠═" + line_name + "═╬═" + line_percent + "═╬═" + line_games + "═╣"
+        puts "║ " + name +      " ║ " +    percentw +  " ║ " + gamesw +     " ║"
+        puts "╚═" + line_name + "═╩═" + line_percent + "═╩═" + line_games + "═╝"
+        puts "\n\n\n"
     else
-        puts "#{user.name} has not played any games!"
+        puts "#{user.name} has not played any games!\n\n\n"
     end
     puts "Press Enter to Continue..."
     gets.chomp
@@ -220,6 +294,7 @@ def delete_user(user)
     user.destroy
 end
 
+
 def how_to_play(user)
     puts "Welcome, #{user.name}!\n\nHere's a quick rundown on how to play:\n\n"
     puts "The goal of the game is to guess all letters of the puzzle word shown in the box."
@@ -228,4 +303,127 @@ def how_to_play(user)
     puts "Using the HINT will give T-rex a slice of your pie!"
     puts "You lose the game when all of your pie slices are gone. :("
     puts "Ready?\n\n\n"
+end
+
+def print_table(username, percent, numgames, forindex, indexmax)
+    if forindex == 0 
+        percent = percent.to_s
+        numgames = numgames.to_s
+        i = 0
+        name = ""
+        line_name = ""
+        percentw = ""
+        line_percent = ""
+        line_games = ""
+        gamesw = ""
+        s_username = "Username"
+        s_percent = "Win %"
+        s_games = "Total"
+        for i in 0..10
+            if s_username[i] != nil
+                name << s_username[i]
+            else
+                name << " "
+            end
+            line_name << "═"
+        end
+
+        for i in 0..5
+            if s_percent[i] != nil
+                percentw << s_percent[i]
+            else
+                percentw << " "
+            end
+            line_percent << "═"
+        end
+        for i in 0..5
+            if s_games[i] != nil
+                gamesw << s_games[i]
+            else
+                gamesw << " "
+            end
+            line_games << "═"
+        end
+        puts "╔═" + line_name + "═╦═" + line_percent + "═╦═" + line_games + "═╗"
+        puts "║ " + name +      " ║ " +    percentw +  " ║ " + gamesw +     " ║"
+    end
+    if forindex != indexmax
+        percent = percent.to_s
+        numgames = numgames.to_s
+        i = 0
+        name = ""
+        line_name = ""
+        percentw = ""
+        line_percent = ""
+        line_games = ""
+        gamesw = ""
+        for i in 0..10
+            if username[i] != nil
+                name << username[i]
+            else
+                name << " "
+            end
+            line_name << "═"
+        end
+
+        for i in 0..5
+            if percent[i] != nil
+                percentw << percent[i]
+            else
+                percentw << " "
+            end
+            line_percent << "═"
+        end
+        for i in 0..5
+            if numgames[i] != nil
+                gamesw << numgames[i]
+            else
+                gamesw << " "
+            end
+            line_games << "═"
+        end
+
+        puts "╠═" + line_name + "═╬═" + line_percent + "═╬═" + line_games + "═╣"
+        puts "║ " + name +      " ║ " +    percentw +  " ║ " + gamesw +     " ║"
+    else
+        percent = percent.to_s
+        numgames = numgames.to_s
+        i = 0
+        name = ""
+        line_name = ""
+        percentw = ""
+        line_percent = ""
+        line_games = ""
+        gamesw = ""
+        for i in 0..10
+            if username[i] != nil
+                name << username[i]
+            else
+                name << " "
+            end
+            line_name << "═"
+        end
+
+        for i in 0..5
+            if percent[i] != nil
+                percentw << percent[i]
+            else
+                percentw << " "
+            end
+            line_percent << "═"
+        end
+        for i in 0..5
+            if numgames[i] != nil
+                gamesw << numgames[i]
+            else
+                gamesw << " "
+            end
+            line_games << "═"
+        end
+
+        puts "╠═" + line_name + "═╬═" + line_percent + "═╬═" + line_games + "═╣"
+        puts "║ " + name +      " ║ " +    percentw +  " ║ " + gamesw +     " ║"
+        puts "╚═" + line_name + "═╩═" + line_percent + "═╩═" + line_games + "═╝"
+        puts "\n\n\n"
+    end
 end
