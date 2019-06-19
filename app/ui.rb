@@ -95,6 +95,7 @@ def select_word(dif_lvl)
 end
 
 def view_leaderboard(user)
+    system('clear')
     winpercenthash = {}
     i = 0
     arrtotal = GameSession.all.map do |game|
@@ -116,7 +117,13 @@ def view_leaderboard(user)
         for i in 0..ordered_array.length-1 
             puts "#{ordered_array[i][0].name} won #{ordered_array[i][1]}% of their games over the course of #{ftotal[ordered_array[i][0]]} games" 
         end
+    else
+        for i in 0..4
+            puts "#{ordered_array[i][0].name} won #{ordered_array[i][1]}% of their games over the course of #{ftotal[ordered_array[i][0]]} games" 
+        end
     end
+    puts "Press Enter to Continue."
+    gets.chomp
     menu(user)
 end
 
