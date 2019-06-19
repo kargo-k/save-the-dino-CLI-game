@@ -3,7 +3,7 @@ class User < ActiveRecord::Base
 
     def update_username
         puts "Choose your new name: "
-        puts "EXIT to return to menu:\n\n"
+        puts "To return to menu, enter EXIT.\n\n"
         print ">> "
 
         newname = gets.chomp

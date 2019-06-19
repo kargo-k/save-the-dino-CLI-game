@@ -96,9 +96,9 @@ class GameSession < ActiveRecord::Base
 
     def render_puzzle(puzzle,line,wrong,hint,hint_flag,tries,status)
         system('clear')
-        puts "╔═" + line + "═╗"
-        puts "║ " + puzzle + " ║"
-        puts "╚═" + line + "═╝"
+        puts "╔═" + line + "╗"
+        puts "║ " + puzzle + "║"
+        puts "╚═" + line + "╝"
         if wrong != ""
             puts "Incorrect Guesses: #{wrong}"
         end
