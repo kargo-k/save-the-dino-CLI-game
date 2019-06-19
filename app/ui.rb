@@ -5,6 +5,7 @@ end
 def getplayername
     puts "Enter your username:"
     puts "Type EXIT to exit:"
+    print ">> "
     name = gets.chomp
     if name.downcase == "exit"
         end_program
@@ -26,6 +27,7 @@ def menu(user)
     puts "3. Change your Username"
     puts "4. Delete your Username and Exit"
     puts "5. Exit"
+    print ">> "
     input = gets.chomp
 
     loop do
@@ -48,6 +50,7 @@ def menu(user)
             break
         else
             puts "Error, #{input} is not 1-5, try again"
+            print ">> "
             input = gets.chomp
         end
     end
@@ -62,6 +65,7 @@ def select_difficulty(user)
     puts "3. #{difstr_arr[2]}"
     puts "4. #{difstr_arr[3]}"
     puts "5. #{difstr_arr[4]}"
+    print ">> "
     input = gets.chomp
     loop do
         case input.to_i
@@ -73,6 +77,7 @@ def select_difficulty(user)
             break
         else
             puts "Error, #{input} is not 1-5, try again"
+            print ">> "
             input = gets.chomp
         end
     end
