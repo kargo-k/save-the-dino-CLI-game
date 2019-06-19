@@ -8,6 +8,7 @@ class User < ActiveRecord::Base
         self.save
         menu(self)
     end
+    
     def delete_user
         GameSession.all.each do |game|
             if game.user_id == self.id
