@@ -4,8 +4,12 @@ def welcome
 end
 def getplayername
     puts "Enter your username:"
+    puts "Type EXIT to exit:"
     name = gets.chomp
-    if User.all.any? { |user| user.name.downcase == name.downcase }
+    if name.downcase == "exit"
+        end_program
+        return nil
+    elsif User.all.any? { |user| user.name.downcase == name.downcase }
         User.all.select { |user| user.name.downcase == name.downcase}[0]
     else
         User.create(name: name)
@@ -13,6 +17,9 @@ def getplayername
 end 
 
 def menu(user)
+    if user == nil
+        return nil
+    end
     puts "Make your selection (1-5):"
     puts "1. Start New Game"
     puts "2. View Leaderboard"
@@ -30,13 +37,14 @@ def menu(user)
             view_leaderboard
             break
         when 3
-            puts "update username"
+            user.update_username
             break
         when 4
-            puts "delete user profile"
+            user.delete_user
+            end_program
             break
         when 5
-            puts "Thanks for playing!"
+            end_program
             break
         else
             puts "Error, #{input} is not 1-5, try again"
@@ -87,6 +95,60 @@ def select_word(dif_lvl)
 end
 
 def view_leaderboard 
-    GameSession.all
-    binding.pry
+    winpercenthash = {}
+    i = 0
+    arrtotal = GameSession.all.map do |game|
+        User.find(game.user_id)
+    end
+    arrwin = GameSession.all.select do |game|
+        game.win == true
+    end
+    arrwin.map! do |game|
+        User.find(game.user_id)
+    end
+    ftotal = freq(arrtotal)
+    fwin = freq(arrwin)
+    arrtotal.map do |user|
+        winpercenthash[user] = fwin[user].to_f / ftotal[user] * 100
+    end
+    ordered_array = winpercenthash.sort_by {|k,v| v}.reverse
+    if ordered_array.length < 5
+        for i in 0..ordered_array.length-1 
+            puts "#{ordered_array[i][0].name} won #{ordered_array[i][1]}% of their games over the course of #{ftotal[ordered_array[i][0]]} games" 
+        end
+    end
+    
+end
+
+#creates a frequency hash Code from https://stackoverflow.com/questions/19963001/create-hash-from-array-and-frequency
+def freq(array)
+    hash = Hash.new(0)
+    array.each{|key| hash[key] += 1}
+    hash
+  end
+# selects a random word from the library based on the difficulty level chosen by the user.  Code Credit: https://hashrocket.com/blog/posts/rails-quick-tips-random-records
+def select_word(dif_lvl)
+    case dif_lvl
+    when 1 # easy difficulty
+        word = Word.limit(1).order("RANDOM()").where(difficulty: 0..1000).first
+    when 2 # medium difficulty
+        word = Word.limit(1).order("RANDOM()").where(difficulty: 1001..100000).first
+    when 3 # hard difficulty
+        word = Word.limit(1).order("RANDOM()").where(difficulty: 100001..200000).first
+    when 4 # super hard difficulty
+        word = Word.limit(1).order("RANDOM()").where(difficulty: 200001..400000).first
+    when 5 # master difficulty
+        word = Word.limit(1).order("RANDOM()").where(difficulty: 400001..Word.maximum(:difficulty)).first
+    end
+end
+def end_program
+    puts "Thanks for playing!"
+end
+def delete_user(user)
+    GameSession.all.each do |game|
+        if game.user_id == user.id
+            game.destroy
+        end
+    end
+    user.destroy
 end

@@ -87,6 +87,7 @@ class GameSession < ActiveRecord::Base
             hint = obj[0]["shortdef"].flatten.first
         end
         return hint 
+
     end
 
     def render_puzzle(puzzle,line)

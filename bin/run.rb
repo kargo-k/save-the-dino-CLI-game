@@ -10,5 +10,3 @@ welcome
 userobj = getplayername
 menu(userobj)
 
-binding.pry
-0
