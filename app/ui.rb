@@ -1,7 +1,13 @@
 def welcome
     system('clear')
-    puts "Hey, thanks for hanging my man."
-    puts "ASCII GOES HERE"
+    system("printf '\e[8;50;93t'")
+    puts "                                                              
+      ,---.                    |    |             ,--. o          
+      `---.,---..    ,,---.    |--- |---.,---.    |   |.,---.,---.
+          |,---| \\  / |---'    |    |   ||---'    |   |||   ||   |
+      `---'`---^  `'  `---'    `---'`   '`---'    `--' ``   '`---'
+                                                                  "
+    puts "\n\n"
 end
 def getplayername
     puts "Enter your username:"
@@ -14,11 +20,13 @@ def getplayername
         end_program
         return nil
     elsif User.all.any? { |user| user.name.downcase == name.downcase }
-        User.all.select { |user| user.name.downcase == name.downcase}[0]
+        user = User.all.select { |user| user.name.downcase == name.downcase}[0]
+        puts "Welcome back, #{user.name}"
     else
-        User.create(name: name)
+        user = User.create(name: name)
+        how_to_play(user)
     end
-
+    user
 end 
 
 def menu(user)
@@ -259,7 +267,23 @@ def select_word(dif_lvl)
     end
 end
 def end_program
-    puts "Thanks for playing!"
+    # ascii text from http://patorjk.com/software/taag/
+    puts "
+                               
+  --.--|              |          
+    |  |---.,---.,---.|__/ ,---. 
+    |  |   |,---||   ||  \ `---. 
+    `  `   '`---^`   '`   ``---' 
+          ,---.                  
+          |__. ,---.,---.        
+          |    |   ||            
+       |  `    `---'` o          
+  ,---.|    ,---.,   ..,---.,---.
+  |   ||    ,---||   |||   ||   |
+  |---'`---'`---^`---|``   '`---|
+  |              `---'      `---'
+  "
+    puts "Created by Philip Sterling and Karen Go \nwith Flatiron School Seattle-Web-060319\n\n\n\n\n"
 end
 def delete_user(user)
     GameSession.all.each do |game|
@@ -269,6 +293,18 @@ def delete_user(user)
     end
     user.destroy
 end
+
+
+def how_to_play(user)
+    puts "Welcome, #{user.name}!\n\nHere's a quick rundown on how to play:\n\n"
+    puts "The goal of the game is to guess all letters of the puzzle word shown in the box."
+    puts "If the guess is wrong, T-rex will eat one of the 6 slices of your pie!"
+    puts "Type in HINT to get the hint to the puzzle word, which will be a synonym or definition of the word."
+    puts "Using the HINT will give T-rex a slice of your pie!"
+    puts "You lose the game when all of your pie slices are gone. :("
+    puts "Ready?\n\n\n"
+end
+
 def print_table(username, percent, numgames, forindex, indexmax)
     if forindex == 0 
         percent = percent.to_s
@@ -390,5 +426,4 @@ def print_table(username, percent, numgames, forindex, indexmax)
         puts "╚═" + line_name + "═╩═" + line_percent + "═╩═" + line_games + "═╝"
         puts "\n\n\n"
     end
-        
 end
