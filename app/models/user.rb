@@ -3,6 +3,7 @@ class User < ActiveRecord::Base
 
     def update_username
         puts "Choose your new name: "
+        prints ">> "
         newname = gets.chomp
         self.name = newname
         self.save
