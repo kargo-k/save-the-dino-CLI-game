@@ -77,7 +77,7 @@ end
 # Prompts the user to select a difficulty level between 1-5
 def select_difficulty(user)
     system('clear')
-    puts "Make your selection (1-5):"
+    puts "Choose Difficulty (1-5):"
     difstr_arr = ["Easy","Medium","Hard","Expert","Master"]
     puts "1. #{difstr_arr[0]}"
     puts "2. #{difstr_arr[1]}"
@@ -298,10 +298,10 @@ end
 def how_to_play(user)
     puts "Welcome, #{user.name}!\n\nHere's a quick rundown on how to play:\n\n"
     puts "The goal of the game is to guess all letters of the puzzle word shown in the box."
-    puts "If the guess is wrong, T-rex will eat one of the 6 slices of your pie!"
+    puts "If the guess is wrong, the asteroid will get closer to your Dino!"
     puts "Type in HINT to get the hint to the puzzle word, which will be a synonym or definition of the word."
-    puts "Using the HINT will give T-rex a slice of your pie!"
-    puts "You lose the game when all of your pie slices are gone. :("
+    puts "Using the HINT will advance the asteroid!"
+    puts "You lose the game when the asteroid stikes the dino. :("
     puts "Ready?\n\n\n"
 end
 
