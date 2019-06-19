@@ -20,17 +20,18 @@ class GameSession < ActiveRecord::Base
         flag = false
         while flag == false && tries > 0 && puzzle.include?("_")
             puts "\n\nTo exit the game, enter EXIT\nTo guess a letter, enter a letter.\nFor a hint, enter HINT\n#{tries} tries remaining.\n\n"
-            
+            print ">>"
             guess = gets.chomp
+            guess = guess.downcase
             if guess.upcase == "EXIT"
-                # ! exit game function here
-                # ! self.win = false
+                self.win = false
+                self.save
                 flag = true
-            elsif guess == "HINT"
+            elsif guess.upcase == "HINT"
                 hint_flag = true
                 render_puzzle(puzzle,line)
                 puts "Your hint: #{hint}"
-            elsif guess.length == 1 && "abcdefghijklmnopqrstuvwxyz".include?(guess.downcase)
+            elsif guess.length == 1 && "abcdefghijklmnopqrstuvwxyz".include?(guess)
                 if word.include?(guess)
                     for i in 1..word.count(guess)
                         puzzle[word.index(guess)*2] = guess
@@ -65,9 +66,11 @@ class GameSession < ActiveRecord::Base
 
         if tries == 0
             self.win = false
+            self.save
             puts "The solution was: #{Word.find(self.word_id).word}."
         elsif !puzzle.include?("_")
             self.win = true
+            self.save
             puts "\n\nYou solved the puzzle!\n\n"
             user = User.find(self.user_id)
             menu(user)

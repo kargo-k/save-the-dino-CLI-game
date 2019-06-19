@@ -34,7 +34,7 @@ def menu(user)
             select_difficulty(user)
             break
         when 2
-            view_leaderboard
+            view_leaderboard(user)
             break
         when 3
             user.update_username
@@ -94,7 +94,7 @@ def select_word(dif_lvl)
     end
 end
 
-def view_leaderboard 
+def view_leaderboard(user)
     winpercenthash = {}
     i = 0
     arrtotal = GameSession.all.map do |game|
@@ -117,7 +117,7 @@ def view_leaderboard
             puts "#{ordered_array[i][0].name} won #{ordered_array[i][1]}% of their games over the course of #{ftotal[ordered_array[i][0]]} games" 
         end
     end
-    
+    menu(user)
 end
 
 #creates a frequency hash Code from https://stackoverflow.com/questions/19963001/create-hash-from-array-and-frequency
