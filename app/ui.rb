@@ -5,7 +5,11 @@ def welcome
 end
 def getplayername
     puts "Enter your username:"
+<<<<<<< HEAD
     puts "Type EXIT to exit: \n\n"
+=======
+    puts "Type EXIT to exit:"
+>>>>>>> master
     print ">> "
     name = gets.chomp
     system('clear')
@@ -27,12 +31,19 @@ def menu(user)
     puts "Make your selection (1-5):"
     puts "1. Start New Game"
     puts "2. View Leaderboard"
+<<<<<<< HEAD
     puts "3. View your Records"
     puts "4. Change your Username"
     puts "5. Delete your Username and Exit"
     puts "6. Exit\n\n"
     print ">> "
 
+=======
+    puts "3. Change your Username"
+    puts "4. Delete your Username and Exit"
+    puts "5. Exit"
+    print ">> "
+>>>>>>> master
     input = gets.chomp
 
     loop do
@@ -59,6 +70,7 @@ def menu(user)
             break
         else
             puts "Error, #{input} is not 1-5, try again"
+            print ">> "
             input = gets.chomp
         end
     end
@@ -72,7 +84,11 @@ def select_difficulty(user)
     puts "2. #{difstr_arr[1]}"
     puts "3. #{difstr_arr[2]}"
     puts "4. #{difstr_arr[3]}"
+<<<<<<< HEAD
     puts "5. #{difstr_arr[4]}\n\n"
+=======
+    puts "5. #{difstr_arr[4]}"
+>>>>>>> master
     print ">> "
     input = gets.chomp
     loop do
@@ -85,6 +101,7 @@ def select_difficulty(user)
             break
         else
             puts "Error, #{input} is not 1-5, try again"
+            print ">> "
             input = gets.chomp
         end
     end

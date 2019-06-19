@@ -3,8 +3,12 @@ class User < ActiveRecord::Base
 
     def update_username
         puts "Choose your new name: "
+<<<<<<< HEAD
         puts "EXIT to return to menu:\n\n"
         print ">> "
+=======
+        prints ">> "
+>>>>>>> master
         newname = gets.chomp
         if newname.downcase == "exit"
             menu(self)
