@@ -92,18 +92,25 @@ class GameSession < ActiveRecord::Base
         dict_response = RestClient.get(dic_url)
         dict_obj = JSON.parse(dict_response)
 
+        wikiurl = "https://en.wikipedia.org/w/api.php?action=query&format=json&prop=description&titles=#{word}"
+        wiki_resp = RestClient.get(wikiurl)
+        wiki_obj = JSON.parse(wiki_resp)
+
         if obj[0].class != String && !obj.empty?
             hint = obj[0]["meta"]["syns"].flatten.sample + " (synonym)"
         elsif dict_obj[0].class == Hash
             hint = dict_obj[0]["shortdef"].flatten.first
-        else
-            hint = "Experts and Masters don't need no hints."
+        else wiki_obj.keys.length >= 1
+            x = wiki_obj.dig("query", "pages")
+            hint = x.values.first.dig("description")
+            if hint == nil
+                hint = "Experts and Masters don't need no hints."
+            end
         end
         return hint 
     end
 
     def render_puzzle(puzzle,line,wrong,hint,hint_flag,tries,status)
-        system('clear')
         puts "╔═" + line + "╗"
         puts "║ " + puzzle + "║"
         puts "╚═" + line + "╝"
