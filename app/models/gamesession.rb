@@ -31,9 +31,10 @@ class GameSession < ActiveRecord::Base
                 end_program
             elsif guess.upcase == "HINT"
                 hint_flag = true
-                tries -= 1
+                if !hint.include?("Experts and Masters don't need no hints.")
+                    tries -= 1
+                end
                 render_puzzle(puzzle,line,wrong,hint,hint_flag,tries,status)
-
             elsif guess.length == 1 && "abcdefghijklmnopqrstuvwxyz".include?(guess)
                 if word.include?(guess)
                     for i in 1..word.count(guess)
@@ -83,14 +84,14 @@ class GameSession < ActiveRecord::Base
         dict_response = RestClient.get(dic_url)
         dict_obj = JSON.parse(dict_response)
 
-        if obj[0].class != String
+        if obj[0].class != String && !obj.empty?
             hint = obj[0]["meta"]["syns"].flatten.sample + " (synonym)"
-        elsif dict_obj[0]["shortdef"] != nil
+        elsif dict_obj[0] != nil && !dict_obj.empty?
             hint = dict_obj[0]["shortdef"].flatten.first
         else
             hint = "Experts and Masters don't need no hints."
-            tries += 1
         end
+
         return hint 
     end
 
