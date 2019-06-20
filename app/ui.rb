@@ -251,6 +251,7 @@ def self_records(user)
     else
         puts "#{user.name} has not played any games!\n\n\n"
     end
+    user.list_my_words
     puts "Press Enter to Continue..."
     gets.chomp
     system('clear')

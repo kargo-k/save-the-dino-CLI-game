@@ -2,6 +2,7 @@ require 'bundler'
 require 'rest-client'
 require 'json'
 require 'require_all'
+require 'colorize'
 
 Bundler.require
 require_all 'app'

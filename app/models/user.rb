@@ -35,4 +35,21 @@ class User < ActiveRecord::Base
             menu(self)
         end
     end
+
+    # this method lists the words that a specific user has played
+    def list_my_words
+        games = GameSession.where(user_id: self.id)
+        words = games.map {|gs| Word.find(gs.word_id).word}
+        wins = games.map {|gs| gs.win}
+        h = {true => [], false => []}
+        for i in 0..words.length-1
+            wins[i] ? h[true] << words[i].green : h[false] << words[i].red
+        end
+        puts "Puzzles Won".green.underline
+        puts h[true]
+        puts "\n"
+        puts "Puzzles Lost".red.underline
+        puts h[false]
+        puts "\n\n\n"
+    end
 end
