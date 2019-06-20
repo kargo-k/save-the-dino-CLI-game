@@ -12,7 +12,9 @@ class GameSession < ActiveRecord::Base
         puzzle = ""
         line = ""
         wrong = ""
+        solution = ""
         for i in 1..word.length
+            solution << "#{word[i-1]} "
             puzzle << "_ "
             line << "══"
         end
@@ -77,9 +79,9 @@ class GameSession < ActiveRecord::Base
         if tries == 0
             self.win = false
             self.save
-            status = "The solution was: #{Word.find(self.word_id).word}."
+            status = "The solution was: " + "#{Word.find(self.word_id).word}".blue.underline
             render_dino(tries)
-            render_puzzle(puzzle,line,wrong,hint,hint_flag,tries,status)
+            render_puzzle(solution,line,wrong,hint,hint_flag,tries,status)
             user.self_records
 
         elsif !puzzle.include?("_")
@@ -138,21 +140,21 @@ class GameSession < ActiveRecord::Base
         system('clear')
         case tries
         when 6
-            puts " \n\n\n\n\n "
+            puts " \n\n\n\n\n"
             puts "                         ___
                         / '_) 'RAWR'
                 .-^^^-/ /
             ___/       /
             ¯¯¯¯|_|-|_|".green
         when 5
-            puts "  .  <-asteroid\n\n\n\n ".red
+            puts "  .  <-asteroid\n\n\n\n".red
             puts "                             ___
                             / '_) 'rawr'
                     .-^^^-/ /
                 ___/       /
                 ¯¯¯¯|_|-|_|".green
         when 4
-            puts "  o  <-asteroid getting bigger...\n\n\n\n ".red
+            puts "  o  <-asteroid getting bigger...\n\n\n\n".red
             puts "                             ___
                             / '_) 'rawr?'
                     .-^^^-/ /
@@ -168,7 +170,7 @@ class GameSession < ActiveRecord::Base
         when 2
             puts " ,gRg,  
 Yb   dP 
- \"8g8\" \n\n\n".red
+ \"8g8\" \n\n".red
             puts "                             ___
                             / '_) '?!?!'
                     .-^^^-/ /
