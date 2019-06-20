@@ -2,6 +2,8 @@
 
 Save the Dino is a guessing game based on the game hangman.  Instead of saving a man from hanging in the gallows, which is a pretty morbid premise, the player is tasked with saving the dino from an approaching asteroid by guessing the letters in the puzzle word correctly.  There are 5 levels of difficulty that the player can select.  When an incorrect letter is guessed, the asteroid approaches closer to the dino, and after 6 incorrect guesses, the asteroid strikes the dino and the game is over.  The player can request a hint, which uses an API to provide either a synonym from the Merriam-Webster Thesaurus, a definition from the Merriam-Webster Collegiate Dictionary, or a short description from Wikipedia.
 
+Visit https://youtu.be/uo2_BYEbE1E for the instructional video.
+
 ## Project Requirements
 
 1. Sqlite3 database accessed using ActiveRecord.
