@@ -71,7 +71,7 @@ class GameSession < ActiveRecord::Base
             status = "The solution was: #{Word.find(self.word_id).word}."
             render_dino(tries)
             render_puzzle(puzzle,line,wrong,hint,hint_flag,tries,status)
-            menu(user)
+            self_records(user)
 
         elsif !puzzle.include?("_")
             self.win = true
