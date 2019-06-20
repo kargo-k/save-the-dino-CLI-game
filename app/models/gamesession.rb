@@ -33,10 +33,16 @@ class GameSession < ActiveRecord::Base
                 flag = true
                 end_program
             elsif guess.upcase == "HINT"
-                hint_flag = true
-                if !hint.include?("Experts and Masters don't need no hints.")
+                if hint_flag == false
+                    hint_flag = true
                     tries -= 1
+                    if hint.include?("Experts and Masters don't need no hints.")
+                        tries += 1
+                    end
+                else 
+                    tries = tries
                 end
+                
                 render_dino(tries)
                 render_puzzle(puzzle,line,wrong,hint,hint_flag,tries,status)
             elsif guess.length == 1 && "abcdefghijklmnopqrstuvwxyz".include?(guess)
@@ -105,7 +111,7 @@ class GameSession < ActiveRecord::Base
         else wiki_obj.keys.length >= 1
             x = wiki_obj.dig("query", "pages")
             hint = x.values.first.dig("description")
-            if hint == nil
+            if hint == nil || hint == "Disambiguation page providing links to topics that could be referred to by the same search term"
                 hint = "Experts and Masters don't need no hints."
             end
         end

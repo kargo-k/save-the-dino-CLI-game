@@ -10,27 +10,36 @@ Save the Dino is a guessing game based on the game hangman.  Instead of saving a
 4. The User model can access their own record, view their win percentage, update their username, or delete their record.
 5. The CLI displays prompts and updates accordingly.
 
-## Instructions
+## Install Instructions
 
 1. Fork and clone this repository.
-2. Run the bin/run.rb and follow the prompts.
-3. If the database does not download properly, rake the db migrations and call the Word.initialize_library located in bin/run.rb to populate the database with words.
+2. If, for some reason, the database does not download properly or gets corrupted, create a new database.
+3. Rake the database migrations in terminal by running:
 
-## Contributors Guide
+```bash 
+rake db:migrate
+```
+4. Then, populate the word library by running the following ruby command in terminal
+```terminal
+ruby bin/initialize_lib.rb
+``` 
+5. Once the word library is populated, start the game by running
+```terminal
+ruby bin/run.rb
+```
+
+## Game Play
+1. The Command Line Interface will prompt the user for a username.  If a new username is inputted, the program will create the new user and display a short How-To.  If an existing username is inputted, the program will add on to the username's history.
+2. The Menu displays 5 options to Start New Game, View the Leaderboard, View your Records, Change your Username, or Delete Username and Exit.
+3. If Start New Game is selected, the user is then prompted to select a difficulty level (1-5) which will select a word based on the difficulty calculated by the word length and the word's frequency.
+4. The user can then guess letters in the puzzle word until they solve the puzzle or until they run out of tries and the solution is displayed.
+5. A hint is available to the user by typing HINT.  Taking the hint will use one try.  The hint will either be a synonym or definition from the Merriam-Webster Thesaurus, or a short description from Wikipedia.
+5. Inputting EXIT will allow the user to exit the game.
+
+## Contributors
 1. http://number27.org/assets/misc/words.txt
 2. Spencer Lindemuth for all of his advice and support (https://github.com/SpencerLindemuth)
+3. Stackoverflow and Quora
 
----
-3. Make sure to create a good README.md with a short description, install instructions, a contributors guide and a link to the license for your code.
-4. Make sure your project checks off each of the above requirements.
-5. Prepare a video demo (narration helps!) describing how a user would interact with your working project.
-    * The video should:
-      - Have an overview of your project.(2 minutes max)
-6. Prepare a presentation to follow your video.(3 minutes max)
-    * Your presentation should:
-      - Describe something you struggled to build, and show us how you ultimately implemented it in your code.
-      - Discuss 3 things you learned in the process of working on this project.
-      - Address, if anything, what you would change or add to what you have today?
-      - Present any code you would like to highlight.   
-7. *OPTIONAL, BUT RECOMMENDED*: Write a blog post about the project and process.
-
+## License
+Licensed under MIT License (https://github.com/PhilipSterling/module-one-final-project-guidelines-seattle-web-060319/blob/master/LICENSE.md)
