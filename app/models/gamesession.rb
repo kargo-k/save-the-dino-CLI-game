@@ -29,7 +29,11 @@ class GameSession < ActiveRecord::Base
             print ">> "
             guess = gets.chomp
             guess = guess.downcase
-            if guess.upcase == "EXIT"
+            if guess == "showmetheanswer"
+                status = "The solution is... #{Word.find(self.word_id).word}..."
+                render_dino(tries)
+                render_puzzle(puzzle,line,wrong,hint,hint_flag,tries,status)
+            elsif guess.upcase == "EXIT"
                 self.win = false
                 self.save
                 flag = true
