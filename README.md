@@ -1,42 +1,26 @@
-# Module One Final Project Guidelines
+# Save the Dino, a CLI guessing game
 
-Congratulations, you're at the end of module one! You've worked crazy hard to get here and have learned a ton.
-
-For your final project, we'll be building a Command Line database application.
+Save the Dino is a guessing game based on the game hangman.  Instead of saving a man from hanging in the gallows, which is a pretty morbid premise, the player is tasked with saving the dino from an approaching asteroid by guessing the letters in the puzzle word correctly.  There are 5 levels of difficulty that the player can select.  When an incorrect letter is guessed, the asteroid approaches closer to the dino, and after 6 incorrect guesses, the asteroid strikes the dino and the game is over.  The player can request a hint, which uses an API to provide either a synonym from the Merriam-Webster Thesaurus, a definition from the Merriam-Webster Collegiate Dictionary, or a short description from Wikipedia.
 
 ## Project Requirements
 
-### Option One - Data Analytics Project
-
-1. Access a Sqlite3 Database using ActiveRecord.
-2. You should have at minimum three models including one join model. This means you must have a many-to-many relationship.
-3. You should seed your database using data that you collect either from a CSV, a website by scraping, or an API.
-4. Your models should have methods that answer interesting questions about the data. For example, if you've collected info about movie reviews, what is the most popular movie? What movie has the most reviews?
-5. You should provide a CLI to display the return values of your interesting methods.  
-6. Use good OO design patterns. You should have separate classes for your models and CLI interface.
-
-  **Resource:** [Easy Access APIs](https://github.com/learn-co-curriculum/easy-access-apis)
-
-### Option Two - Command Line CRUD App
-
-1. Access a Sqlite3 Database using ActiveRecord.
-2. You should have a minimum of three models.
-3. You should build out a CLI to give your user full CRUD ability for at least one of your resources. For example, build out a command line To-Do list. A user should be able to create a new to-do, see all todos, update a todo item, and delete a todo. Todos can be grouped into categories, so that a to-do has many categories and categories have many to-dos.
-4. Use good OO design patterns. You should have separate models for your runner and CLI interface.
-
-### Brainstorming and Proposing a Project Idea
-
-Projects need to be approved prior to launching into them, so take some time to brainstorm project options that will fulfill the requirements above.  You must have a minimum of four [user stories](https://en.wikipedia.org/wiki/User_story) to help explain how a user will interact with your app.  A user story should follow the general structure of `"As a <role>, I want <goal/desire> so that <benefit>"`. In example, if we were creating an app to randomly choose nearby restaurants on Yelp, we might write:
-
-* As a user, I want to be able to enter my name to retrieve my records
-* As a user, I want to enter a location and be given a random nearby restaurant suggestion
-* As a user, I should be able to reject a suggestion and not see that restaurant suggestion again
-* As a user, I want to be able to save to and retrieve a list of favorite restaurant suggestions
+1. Sqlite3 database accessed using ActiveRecord.
+2. The three models in the app are User, Word, and GameSession. A User has many GameSessions and a Word has many GameSessions.
+3. The word library was built from http://number27.org/assets/misc/words.txt, which provides a list of words ranked by frequency of use.  These words were saved into the database and the difficulty level for each word was determined by the word length divided by the frequency of use.
+4. The User model can access their own record, view their win percentage, update their username, or delete their record.
+5. The CLI displays prompts and updates accordingly.
 
 ## Instructions
 
 1. Fork and clone this repository.
-2. Build your application. Make sure to commit early and commit often. Commit messages should be meaningful (clearly describe what you're doing in the commit) and accurate (there should be nothing in the commit that doesn't match the description in the commit message). Good rule of thumb is to commit every 3-7 mins of actual coding time. Most of your commits should have under 15 lines of code and a 2 line commit is perfectly acceptable.
+2. Run the bin/run.rb and follow the prompts.
+3. If the database does not download properly, rake the db migrations and call the Word.initialize_library located in bin/run.rb to populate the database with words.
+
+## Contributors Guide
+1. http://number27.org/assets/misc/words.txt
+2. Spencer Lindemuth for all of his advice and support (https://github.com/SpencerLindemuth)
+
+---
 3. Make sure to create a good README.md with a short description, install instructions, a contributors guide and a link to the license for your code.
 4. Make sure your project checks off each of the above requirements.
 5. Prepare a video demo (narration helps!) describing how a user would interact with your working project.
@@ -50,10 +34,3 @@ Projects need to be approved prior to launching into them, so take some time to 
       - Present any code you would like to highlight.   
 7. *OPTIONAL, BUT RECOMMENDED*: Write a blog post about the project and process.
 
----
-### Common Questions:
-- How do I turn off my SQL logger?
-```ruby
-# in config/environment.rb add this line:
-ActiveRecord::Base.logger = nil
-```
