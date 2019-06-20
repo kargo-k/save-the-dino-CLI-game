@@ -73,7 +73,7 @@ class GameSession < ActiveRecord::Base
             status = "The solution was: #{Word.find(self.word_id).word}."
             render_dino(tries)
             render_puzzle(puzzle,line,wrong,hint,hint_flag,tries,status)
-            self_records(user)
+            user.self_records
 
         elsif !puzzle.include?("_")
             self.win = true
@@ -81,7 +81,7 @@ class GameSession < ActiveRecord::Base
             status = "You solved the puzzle!"
             render_happy_dino
             render_puzzle(puzzle,line,wrong,hint,hint_flag,tries,status)
-            self_records(user)
+            user.self_records
         end
     end
 

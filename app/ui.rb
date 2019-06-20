@@ -56,7 +56,7 @@ def menu(user)
             break
         when "3"
             system('clear')
-            self_records(user)
+            user.self_records
             break
         when "4"
             user.update_username
@@ -131,6 +131,7 @@ end
 def view_leaderboard(user)
     system('clear')
     winpercenthash = {}
+    gd = {}
     i = 0
     noncheated = GameSession.all.select do |game| 
         game.word_id != nil
@@ -146,10 +147,14 @@ def view_leaderboard(user)
     end
     ftotal = freq(arrtotal)
     fwin = freq(arrwin)
-    arrtotal.map do |user|
+    arrtotal.each do |user|
         winpercenthash[user] = fwin[user].to_f / ftotal[user] * 100
     end
-    ordered_array = winpercenthash.sort_by {|k,v| v}.reverse
+    ordered_array = ftotal.sort_by {|k,v| v}.reverse
+    for i in 0..ordered_array.length-1 do
+        gd[ordered_array[i][0]] = winpercenthash[ordered_array[i][0]]  
+    end 
+    ordered_array = gd.sort_by {|k,v| v}.reverse
     if ordered_array.length == 0
         puts "There are no records to show yet!\n"
     elsif ordered_array.length < 5 && ordered_array.length > 0
@@ -171,93 +176,6 @@ def view_leaderboard(user)
             print_table(username, percent, numgames, forindex, 4) 
         end
     end
-    puts "Press Enter to Continue..."
-    gets.chomp
-    system('clear')
-    menu(user)
-end
-#prints a table showing only the user that is passed in and their stats
-def self_records(user)
-
-    arrselftotal = GameSession.all.select do |game|
-        game.user_id == user.id
-    end
-    arrselftotal = arrselftotal.select do |game|
-        game.word_id != nil
-    end
-    arrselfwin = arrselftotal.select do |game| 
-        game.win == true
-    end
-    percent = arrselfwin.length.to_f/arrselftotal.length * 100
-    if arrselftotal.length > 0
-        username = user.name
-        percent = percent.round(2)
-        numgames = arrselftotal.length
-        percent = percent.to_s
-        numgames = numgames.to_s
-        i = 0
-        name = ""
-        line_name = ""
-        percentw = ""
-        line_percent = ""
-        line_games = ""
-        gamesw = ""
-        s_username = "Username"
-        s_percent = "Win %"
-        s_games = "Total"
-        s_name = ""
-        s_percentw = ""
-        s_gamesw = ""
-        for i in 0..10
-            if s_username[i] != nil
-                s_name << s_username[i]
-            else
-                s_name << " "
-            end
-            if username[i] != nil
-                name << username[i]
-            else
-                name << " "
-            end
-            line_name << "═"
-        end
-
-        for i in 0..5
-            if s_percent[i] != nil
-                s_percentw << s_percent[i]
-            else
-                s_percentw << " "
-            end
-            if percent[i] != nil
-                percentw << percent[i]
-            else
-                percentw << " "
-            end
-            line_percent << "═"
-        end
-        for i in 0..5
-            if s_games[i] != nil
-                s_gamesw << s_games[i]
-            else
-                s_gamesw << " "
-            end
-            if numgames[i] != nil
-                gamesw << numgames[i]
-            else
-                gamesw << " "
-            end
-            line_games << "═"
-        end
-        puts "╔═" + line_name + "═╦═" + line_percent + "═╦═" + line_games + "═╗"
-        puts "║ " + s_name +      " ║ " +    s_percentw +  " ║ " + s_gamesw +     " ║"
-        puts "╠═" + line_name + "═╬═" + line_percent + "═╬═" + line_games + "═╣"
-        puts "║ " + name +      " ║ " +    percentw +  " ║ " + gamesw +     " ║"
-        puts "╚═" + line_name + "═╩═" + line_percent + "═╩═" + line_games + "═╝"
-        puts "\n\n\n"
-    else
-        puts "#{user.name} has not played any games!\n\n\n"
-    end
-    user.list_my_words
     puts "Press Enter to Continue..."
     gets.chomp
     system('clear')
