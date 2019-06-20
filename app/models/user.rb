@@ -30,8 +30,7 @@ class User < ActiveRecord::Base
                 end
             end
             self.destroy
-            puts "Your username has been deleted.  Thanks for playing!"
-            sleep 3
+            puts "Your username has been deleted."
             end_program
         else
             menu(self)
