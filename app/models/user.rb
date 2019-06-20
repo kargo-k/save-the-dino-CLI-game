@@ -39,6 +39,7 @@ class User < ActiveRecord::Base
     # this method lists the words that a specific user has played
     def list_my_words
         games = GameSession.where(user_id: self.id)
+        games = games.select {|game| game.word_id != nil}
         words = games.map {|gs| Word.find(gs.word_id).word}
         wins = games.map {|gs| gs.win}
         h = {true => [], false => []}
