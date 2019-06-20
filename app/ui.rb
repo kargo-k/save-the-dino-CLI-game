@@ -1,3 +1,4 @@
+#Welcome method prints the welcome message when called from the run.rb file
 def welcome
     system('clear')
     system("printf '\e[8;50;93t'")
@@ -9,6 +10,7 @@ def welcome
                                                                   "
     puts "\n\n"
 end
+#getplayername method prompts the user to input a username which then creates a user object and saves it to the database or gets the already existing user object from the database
 def getplayername
     puts "Enter your username:"
     puts "To exit the game, enter EXIT. \n\n"
@@ -16,19 +18,19 @@ def getplayername
     print ">> "
     name = gets.chomp
     system('clear')
-    if name.downcase == "exit"
+    if name.downcase == "exit" #if user input is exit, end the app
         end_program
         return nil
-    elsif User.all.any? { |user| user.name.downcase == name.downcase }
+    elsif User.all.any? { |user| user.name.downcase == name.downcase } #if the user exists, get the user object
         user = User.all.select { |user| user.name.downcase == name.downcase}[0]
         puts "Welcome back, #{user.name}"
-    else
+    else #create the user and give them a how to play instructions method call instead of just going to menu
         user = User.create(name: name)
         how_to_play(user)
     end
     user
 end 
-
+#the hub in which the user selects what to do within the app, using a loop do statment allows for the user to input until they pick a correct option, if the object passed in is nil from the getplayername method the menu simply exits.
 def menu(user)
     if user == nil
         return nil
@@ -66,6 +68,13 @@ def menu(user)
             system('clear')
             end_program
             break
+        when "choosemyownword"
+            puts "Pick your own word\n\n"
+            print ">> "
+            word = gets.chomp
+            current_sesh = GameSession.create(user_id: user.id)
+            current_sesh.start_game(word)
+            break
         else
             puts "Error, #{input} is not 1-5, try again"
             print ">> "
@@ -74,7 +83,7 @@ def menu(user)
     end
 end
 
-# Prompts the user to select a difficulty level between 1-5
+# Prompts the user to select a difficulty level between 1-5 then calls startgame with a word of that difficulty, again uses a loop do to ensure valid imput from the user.
 def select_difficulty(user)
     system('clear')
     puts "Choose Difficulty (1-5):"
@@ -118,7 +127,7 @@ def select_word(dif_lvl)
         word = Word.limit(1).order("RANDOM()").where(difficulty: 400001..Word.maximum(:difficulty)).first
     end
 end
-
+# goes through all game session objects in the database and all game sessions where the win value is true to return the top 5 players in the database in a table created with the print table method
 def view_leaderboard(user)
     system('clear')
     winpercenthash = {}
@@ -138,7 +147,9 @@ def view_leaderboard(user)
         winpercenthash[user] = fwin[user].to_f / ftotal[user] * 100
     end
     ordered_array = winpercenthash.sort_by {|k,v| v}.reverse
-    if ordered_array.length < 5
+    if ordered_array.length == 0
+        puts "There are no records to show yet!\n"
+    elsif ordered_array.length < 5 && ordered_array.length > 0
         for i in 0..ordered_array.length-1 
             puts "#{ordered_array[i][0].name} won #{ordered_array[i][1].round(2)}% of their games over the course of #{ftotal[ordered_array[i][0]]} games" 
             username = ordered_array[i][0].name
@@ -162,6 +173,7 @@ def view_leaderboard(user)
     system('clear')
     menu(user)
 end
+#prints a table showing only the user that is passed in and their stats
 def self_records(user)
 
     arrselftotal = GameSession.all.select do |game|
@@ -266,6 +278,7 @@ def select_word(dif_lvl)
         word = Word.limit(1).order("RANDOM()").where(difficulty: 400001..Word.maximum(:difficulty)).first
     end
 end
+#whenever the user stops playing prints a thanks for playing message in ascii word art
 def end_program
     # ascii text from http://patorjk.com/software/taag/
     puts "
@@ -285,16 +298,10 @@ def end_program
   "
     puts "Created by Philip Sterling and Karen Go \nwith Flatiron School Seattle-Web-060319\n\n\n\n\n"
 end
-def delete_user(user)
-    GameSession.all.each do |game|
-        if game.user_id == user.id
-            game.destroy
-        end
-    end
-    user.destroy
-end
 
 
+
+# only called from when a new user is created, to tell them how to save the dino
 def how_to_play(user)
     puts "Welcome, #{user.name}!\n\nHere's a quick rundown on how to play:\n\n"
     puts "The goal of the game is to guess all letters of the puzzle word shown in the box."
@@ -304,7 +311,7 @@ def how_to_play(user)
     puts "You lose the game when the asteroid stikes the dino. :("
     puts "Ready?\n\n\n"
 end
-
+# prints the table and formats it for the leaderboard so that it is table like and aligned
 def print_table(username, percent, numgames, forindex, indexmax)
     if forindex == 0 
         percent = percent.to_s

@@ -2,8 +2,10 @@ class GameSession < ActiveRecord::Base
     has_many :words
     has_many :users
 
-    def start_game
-        word = Word.find(self.word_id).word
+    def start_game(word = "")
+        if word == ""
+            word = Word.find(self.word_id).word
+        end
         hint = get_hint(word)
         hint_flag = false
         tries = 6
