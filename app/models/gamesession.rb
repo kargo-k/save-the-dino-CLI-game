@@ -50,6 +50,7 @@ class GameSession < ActiveRecord::Base
                     for i in 1..word.count(guess)
                         puzzle[word.index(guess)*2] = guess
                         word[word.index(guess)] = "_"
+                        status = "Getting closer!"
                     end
                     render_dino(tries)
                     render_puzzle(puzzle,line,wrong,hint,hint_flag,tries,status)
