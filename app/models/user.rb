@@ -54,4 +54,91 @@ class User < ActiveRecord::Base
         puts h[false]
         puts "\n\n\n"
     end
+    #prints a table showing only the user that is passed in and their stats
+    def self_records
+
+        arrselftotal = GameSession.all.select do |game|
+            game.user_id == self.id
+        end
+        arrselftotal = arrselftotal.select do |game|
+            game.word_id != nil
+        end
+        arrselfwin = arrselftotal.select do |game| 
+            game.win == true
+        end
+        percent = arrselfwin.length.to_f/arrselftotal.length * 100
+        if arrselftotal.length > 0
+            username = self.name
+            percent = percent.round(2)
+            numgames = arrselftotal.length
+            percent = percent.to_s
+            numgames = numgames.to_s
+            i = 0
+            name = ""
+            line_name = ""
+            percentw = ""
+            line_percent = ""
+            line_games = ""
+            gamesw = ""
+            s_username = "Username"
+            s_percent = "Win %"
+            s_games = "Total"
+            s_name = ""
+            s_percentw = ""
+            s_gamesw = ""
+            for i in 0..10
+                if s_username[i] != nil
+                    s_name << s_username[i]
+                else
+                    s_name << " "
+                end
+                if username[i] != nil
+                    name << username[i]
+                else
+                    name << " "
+                end
+                line_name << "═"
+            end
+    
+            for i in 0..5
+                if s_percent[i] != nil
+                    s_percentw << s_percent[i]
+                else
+                    s_percentw << " "
+                end
+                if percent[i] != nil
+                    percentw << percent[i]
+                else
+                    percentw << " "
+                end
+                line_percent << "═"
+            end
+            for i in 0..5
+                if s_games[i] != nil
+                    s_gamesw << s_games[i]
+                else
+                    s_gamesw << " "
+                end
+                if numgames[i] != nil
+                    gamesw << numgames[i]
+                else
+                    gamesw << " "
+                end
+                line_games << "═"
+            end
+            puts "╔═" + line_name + "═╦═" + line_percent + "═╦═" + line_games + "═╗"
+            puts "║ " + s_name +      " ║ " +    s_percentw +  " ║ " + s_gamesw +     " ║"
+            puts "╠═" + line_name + "═╬═" + line_percent + "═╬═" + line_games + "═╣"
+            puts "║ " + name +      " ║ " +    percentw +  " ║ " + gamesw +     " ║"
+            puts "╚═" + line_name + "═╩═" + line_percent + "═╩═" + line_games + "═╝"
+            puts "\n\n\n"
+        else
+            puts "#{self.name} has not played any games!\n\n\n"
+        end
+        self.list_my_words
+        puts "Press Enter to Continue..."
+        gets.chomp
+        system('clear')
+        menu(self)
+    end
 end
