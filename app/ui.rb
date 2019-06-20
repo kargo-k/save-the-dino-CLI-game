@@ -263,7 +263,7 @@ def freq(array)
     hash = Hash.new(0)
     array.each{|key| hash[key] += 1}
     hash
-  end
+end
 # selects a random word from the library based on the difficulty level chosen by the user.  Code Credit: https://hashrocket.com/blog/posts/rails-quick-tips-random-records
 def select_word(dif_lvl)
     case dif_lvl
@@ -297,17 +297,17 @@ def end_program
   |---'`---'`---^`---|``   '`---|
   |              `---'      `---'
   "
-    puts "Created by Philip Sterling and Karen Go \nwith Flatiron School Seattle-Web-060319\n\n\n\n\n"
+    puts "Created by Philip Sterling and Karen Go \nwith Flatiron School Seattle-Web-060319\n\n\n\n\n".blue
 end
 
 
 
 # only called from when a new user is created, to tell them how to save the dino
 def how_to_play(user)
-    puts "Welcome, #{user.name}!\n\nHere's a quick rundown on how to play:\n\n"
+    puts "Welcome, #{user.name}!\n\n".blue + "Here's a quick rundown on how to play:\n\n"
     puts "The goal of the game is to guess all letters of the puzzle word shown in the box."
     puts "If the guess is wrong, the asteroid will get closer to your Dino!"
-    puts "Type in HINT to get the hint to the puzzle word, which will be a synonym or definition of the word."
+    puts "Type in "+ "HINT ".green + "to get the hint to the puzzle word, which will be a synonym or definition of the word."
     puts "Using the HINT will advance the asteroid!"
     puts "You lose the game when the asteroid stikes the dino. :("
     puts "Ready?\n\n\n"

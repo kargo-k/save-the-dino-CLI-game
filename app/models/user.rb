@@ -18,7 +18,7 @@ class User < ActiveRecord::Base
     # removes the user that called the method and all of their gamesession data from the database if they confirm with the delete keyword
     def delete_user
         system('clear')
-        puts "Type DELETE if you are sure you want to delete #{self.name}?"
+        puts "Type " + "DELETE".red.underline + " if you are sure you want to delete #{self.name}?"
         puts "User any other input to return to menu\n\n"
         print ">> "
         confirm = gets.chomp
@@ -30,6 +30,8 @@ class User < ActiveRecord::Base
                 end
             end
             self.destroy
+            puts "Your username has been deleted.  Thanks for playing!"
+            sleep 3
             end_program
         else
             menu(self)

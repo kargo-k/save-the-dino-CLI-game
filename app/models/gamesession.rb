@@ -23,7 +23,7 @@ class GameSession < ActiveRecord::Base
 
         flag = false
         while flag == false && tries > 0 && puzzle.include?("_")
-            puts "\n\nTo guess a letter, enter a letter.\nFor a hint, enter HINT (uses a try)\n#{tries} tries remaining.\n\nTo exit the game, enter EXIT."
+            puts "\n\nTo guess a letter, enter a letter.\nFor a hint, enter " + "HINT ".green + "(uses a try)\n#{tries} tries remaining.\n\nTo exit the game, enter " + "EXIT.".red
             print ">> "
             guess = gets.chomp
             guess = guess.downcase
@@ -136,48 +136,48 @@ class GameSession < ActiveRecord::Base
                         / '_) 'RAWR'
                 .-^^^-/ /
             ___/       /
-            ¯¯¯¯|_|-|_|"
+            ¯¯¯¯|_|-|_|".green
         when 5
-            puts "  .  <-asteroid\n\n\n\n "
+            puts "  .  <-asteroid\n\n\n\n ".red
             puts "                             ___
                             / '_) 'rawr'
                     .-^^^-/ /
                 ___/       /
-                ¯¯¯¯|_|-|_|"
+                ¯¯¯¯|_|-|_|".green
         when 4
-            puts "  o  <-asteroid getting bigger...\n\n\n\n "
+            puts "  o  <-asteroid getting bigger...\n\n\n\n ".red
             puts "                             ___
                             / '_) 'rawr?'
                     .-^^^-/ /
                 ___/       /
-                ¯¯¯¯|_|-|_|"
+                ¯¯¯¯|_|-|_|".green
         when 3
-            puts "  O\n\n\n\n "
+            puts "  O\n\n\n\n ".red
             puts "                             ___
                             / '_) 'uhh'
                     .-^^^-/ /
                 ___/       /
-                ¯¯¯¯|_|-|_|"
+                ¯¯¯¯|_|-|_|".green
         when 2
             puts " ,gRg,  
 Yb   dP 
- \"8g8\" \n\n\n" 
+ \"8g8\" \n\n\n".red
             puts "                             ___
                             / '_) '?!?!'
                     .-^^^-/ /
                 ___/       /
-                ¯¯¯¯|_|-|_|"
+                ¯¯¯¯|_|-|_|".green
         when 1
             puts " ,gPPRg,  
 dP'   `Yb 
 8)     (8
 Yb     dP 
- \"8ggg8\" "
+ \"8ggg8\" ".red
             puts "                             ___
                             / '_) 'halp!'
                     .-^^^-/ /
                 ___/       /
-                ¯¯¯¯|_|-|_|"
+                ¯¯¯¯|_|-|_|".green
         else
 puts "
      _,,ddP***Ybb,,_         
@@ -192,18 +192,18 @@ d                        b
   Ya                    aP         
    Ya                 aP          
      Yb,_         _,dP           
-         YbbgggddP             "
-puts "                      'ow.'"
+         YbbgggddP             ".red
+puts "                      'ow.'".green
         end
     end
     def render_happy_dino
         system('clear')
         user = User.find { |user| self.user_id == user.id }
         puts " \n\n\n\n\n "
-            puts "                         /\\_
+            puts "                         " + "/\\".blue.underline + "_".green + "
                         / '_) 'YAY, thank you #{user.name}'
                 .-^^^-/ /
             ___/       /
-            ¯¯¯¯|_|-|_|"
+            ¯¯¯¯|_|-|_|".green
     end
 end
