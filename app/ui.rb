@@ -132,10 +132,13 @@ def view_leaderboard(user)
     system('clear')
     winpercenthash = {}
     i = 0
-    arrtotal = GameSession.all.map do |game|
+    noncheated = GameSession.all.select do |game| 
+        game.word_id != nil
+    end
+    arrtotal = noncheated.map do |game|
         User.find(game.user_id)
     end
-    arrwin = GameSession.all.select do |game|
+    arrwin = noncheated.select do |game|
         game.win == true
     end
     arrwin.map! do |game|
@@ -178,6 +181,9 @@ def self_records(user)
 
     arrselftotal = GameSession.all.select do |game|
         game.user_id == user.id
+    end
+    arrselftotal = arrselftotal.select do |game|
+        game.word_id != nil
     end
     arrselfwin = arrselftotal.select do |game| 
         game.win == true
