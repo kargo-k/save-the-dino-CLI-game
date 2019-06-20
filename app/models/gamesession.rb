@@ -77,7 +77,7 @@ class GameSession < ActiveRecord::Base
             self.win = true
             self.save
             status = "You solved the puzzle!"
-            render_dino(tries)
+            render_happy_dino
             render_puzzle(puzzle,line,wrong,hint,hint_flag,tries,status)
             self_records(user)
         end
@@ -193,5 +193,15 @@ d                        b
          YbbgggddP             "
 puts "                      'ow.'"
         end
+    end
+    def render_happy_dino
+        system('clear')
+        user = User.find { |user| self.user_id == user.id }
+        puts " \n\n\n\n\n "
+            puts "                         /\\_
+                        / '_) 'YAY, thank you #{user.name}'
+                .-^^^-/ /
+            ___/       /
+            ¯¯¯¯|_|-|_|"
     end
 end

@@ -34,11 +34,11 @@ def menu(user)
         return nil
     end
     puts "Make your selection (1-5):"
-    puts "1. Start New Game"
-    puts "2. View Leaderboard"
-    puts "3. View your Records"
-    puts "4. Change your Username"
-    puts "5. Delete your Username and Exit"
+    puts "  1. Start New Game"
+    puts "  2. View Leaderboard"
+    puts "  3. View your Records"
+    puts "  4. Change your Username"
+    puts "  5. Delete your Username and Exit"
     puts "To exit the game, enter EXIT.\n\n"
     print ">> "
 
@@ -79,11 +79,11 @@ def select_difficulty(user)
     system('clear')
     puts "Choose Difficulty (1-5):"
     difstr_arr = ["Easy","Medium","Hard","Expert","Master"]
-    puts "1. #{difstr_arr[0]}"
-    puts "2. #{difstr_arr[1]}"
-    puts "3. #{difstr_arr[2]}"
-    puts "4. #{difstr_arr[3]}"
-    puts "5. #{difstr_arr[4]}\n\n"
+    puts "  1. #{difstr_arr[0]}"
+    puts "  2. #{difstr_arr[1]}"
+    puts "  3. #{difstr_arr[2]}"
+    puts "  4. #{difstr_arr[3]}"
+    puts "  5. #{difstr_arr[4]}\n\n"
 
     print ">> "
     input = gets.chomp
