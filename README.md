@@ -1,6 +1,6 @@
 # Save the Dino, a CLI guessing game
 
-Save the Dino is a guessing game based on the game hangman.  Instead of saving a man from hanging in the gallows, which is a pretty morbid premise, the player is tasked with saving the dino from an approaching asteroid by guessing the letters in the puzzle word correctly.  There are 5 levels of difficulty that the player can select.  When an incorrect letter is guessed, the asteroid approaches closer to the dino, and after 6 incorrect guesses, the asteroid strikes the dino and the game is over.  The player can request a hint, which uses an API to provide either a synonym from the Merriam-Webster Thesaurus, a definition from the Merriam-Webster Collegiate Dictionary, or a short description from Wikipedia.
+Save the Dino is a guessing game based on the game hangman.  Instead of saving a man from hanging in the gallows, which is a pretty morbid premise, the player is tasked with saving the dino from an approaching asteroid by guessing the letters in the puzzle word correctly.  There are 5 levels of difficulty that the player can select.  When an incorrect letter (or word) is guessed, the asteroid approaches closer to the dino, and after 6 incorrect guesses, the asteroid strikes the dino and the game is over.  The player can request a hint, which uses an API to provide either a synonym from the Merriam-Webster Thesaurus, a definition from the Merriam-Webster Collegiate Dictionary, or a short description from Wikipedia.
 
 Visit https://youtu.be/uo2_BYEbE1E for the instructional video.
 
@@ -35,6 +35,7 @@ ruby bin/run.rb
 2. The Menu displays 5 options to Start New Game, View the Leaderboard, View your Records, Change your Username, or Delete Username and Exit.
 3. If Start New Game is selected, the user is then prompted to select a difficulty level (1-5) which will select a word based on the difficulty calculated by the word length and the word's frequency.
 4. The user can then guess letters in the puzzle word until they solve the puzzle or until they run out of tries and the solution is displayed.
+5. The user can also choose to guess a word if they think they know the answer to the puzzle.  To guess a word, the player must enter SOLVE and then enter their guess when prompted.
 5. A hint is available to the user by typing HINT.  Taking the hint will use one try.  The hint will either be a synonym or definition from the Merriam-Webster Thesaurus, or a short description from Wikipedia.
 5. Inputting EXIT will allow the user to exit the game.
 

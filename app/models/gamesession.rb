@@ -23,9 +23,8 @@ class GameSession < ActiveRecord::Base
         render_dino(tries)
         render_puzzle(puzzle,line,wrong,hint,hint_flag,tries,status)
 
-        flag = false
-        while flag == false && tries > 0 && puzzle.include?("_")
-            puts "\n\nTo guess a letter, enter a letter.\nFor a hint, enter " + "HINT ".green + "(uses a try)\n#{tries} tries remaining.\n\nTo exit the game, enter " + "EXIT.".red
+        while puzzle != solution && tries > 0 && puzzle.include?("_")
+            puts "\n\nTo guess a letter, enter a letter.\nTo guess a word, enter " + "SOLVE".blue + "(uses a try)" + "For a hint, enter " + "HINT ".green + "(uses a try)\n#{tries} tries remaining.\n\nTo exit the game, enter " + "EXIT.".red
             print ">> "
             guess = gets.chomp
             guess = guess.downcase
@@ -36,7 +35,7 @@ class GameSession < ActiveRecord::Base
             elsif guess.upcase == "EXIT"
                 self.win = false
                 self.save
-                flag = true
+                puzzle = solution
                 end_program
             elsif guess.upcase == "HINT"
                 if hint_flag == false
@@ -48,9 +47,21 @@ class GameSession < ActiveRecord::Base
                 else 
                     tries = tries
                 end
-                
                 render_dino(tries)
                 render_puzzle(puzzle,line,wrong,hint,hint_flag,tries,status)
+            elsif guess.upcase == "SOLVE"
+                print "\n\nEnter your solution: \n>> "
+                guess_word = gets.chomp
+                guess_word = guess_word.downcase
+                if guess_word == Word.find(self.word_id).word
+                    puzzle = solution
+                else
+                    tries -= 1
+                    wrong << guess_word + " "
+                    status = "Sorry, #{guess_word} is not the answer."
+                    render_dino(tries)
+                    render_puzzle(puzzle,line,wrong,hint,hint_flag,tries,status)
+                end
             elsif guess.length == 1 && "abcdefghijklmnopqrstuvwxyz".include?(guess)
                 if word.include?(guess)
                     for i in 1..word.count(guess)
@@ -145,29 +156,29 @@ class GameSession < ActiveRecord::Base
         case tries
         when 6
             puts " \n\n\n\n\n"
-            puts "                         ___
-                        / '_) 'RAWR'
+            puts "                        ___
+                       / '_) 'RAWR'
                 .-^^^-/ /
             ___/       /
             ¯¯¯¯|_|-|_|".green
         when 5
             puts "  .  <-asteroid\n\n\n\n".red
-            puts "                             ___
-                            / '_) 'rawr'
+            puts "                            ___
+                           / '_) 'rawr'
                     .-^^^-/ /
                 ___/       /
                 ¯¯¯¯|_|-|_|".green
         when 4
             puts "  o  <-asteroid getting bigger...\n\n\n\n".red
-            puts "                             ___
-                            / '_) 'rawr?'
+            puts "                            ___
+                           / '_) 'rawr?'
                     .-^^^-/ /
                 ___/       /
                 ¯¯¯¯|_|-|_|".green
         when 3
             puts "  O\n\n\n\n ".red
-            puts "                             ___
-                            / '_) 'uhh'
+            puts "                            ___
+                           / '_) 'uhh'
                     .-^^^-/ /
                 ___/       /
                 ¯¯¯¯|_|-|_|".green
@@ -175,8 +186,8 @@ class GameSession < ActiveRecord::Base
             puts " ,gRg,  
 Yb   dP 
  \"8g8\" \n\n".red
-            puts "                             ___
-                            / '_) '?!?!'
+            puts "                            ___
+                           / '_) '?!?!'
                     .-^^^-/ /
                 ___/       /
                 ¯¯¯¯|_|-|_|".green
@@ -186,8 +197,8 @@ dP'   `Yb
 8)     (8
 Yb     dP 
  \"8ggg8\" ".red
-            puts "                             ___
-                            / '_) 'halp!'
+            puts "                            ___
+                           / '_) 'halp!'
                     .-^^^-/ /
                 ___/       /
                 ¯¯¯¯|_|-|_|".green
