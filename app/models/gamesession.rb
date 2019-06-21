@@ -23,8 +23,9 @@ class GameSession < ActiveRecord::Base
         render_dino(tries)
         render_puzzle(puzzle,line,wrong,hint,hint_flag,tries,status)
 
-        while puzzle != solution && tries > 0 && puzzle.include?("_")
-            puts "\n\nTo guess a letter, enter a letter.\nTo guess a word, enter " + "SOLVE".blue + "(uses a try)" + "For a hint, enter " + "HINT ".green + "(uses a try)\n#{tries} tries remaining.\n\nTo exit the game, enter " + "EXIT.".red
+        # while the guessed letters are not equal to the solution and while the player has more than 0 tries
+        while puzzle != solution && tries > 0
+            puts "\n\nTo guess a letter, enter a letter.\nTo guess a word, enter " + "SOLVE ".blue + "(uses a try)\n" + "For a hint, enter " + "HINT ".green + "(uses a try)\n#{tries} tries remaining.\n\nTo exit the game, enter " + "EXIT.".red
             print ">> "
             guess = gets.chomp
             guess = guess.downcase
@@ -148,7 +149,7 @@ class GameSession < ActiveRecord::Base
         else
             puts "\n"
         end
-        puts "\n#{status}\n\n"
+        puts "\n#{status}\n"
     end
 
     def render_dino(tries)

@@ -12,8 +12,8 @@ def welcome
 end
 #getplayername method prompts the user to input a username which then creates a user object and saves it to the database or gets the already existing user object from the database
 def getplayername
-    puts "Enter your username:"
-    puts "To exit the game, enter EXIT. \n\n"
+    puts "Enter your username:\n\n"
+    puts "To exit the game, enter " + "EXIT\n\n".red
 
     print ">> "
     name = gets.chomp
@@ -23,7 +23,7 @@ def getplayername
         return nil
     elsif User.all.any? { |user| user.name.downcase == name.downcase } #if the user exists, get the user object
         user = User.all.select { |user| user.name.downcase == name.downcase}[0]
-        puts "Welcome back, #{user.name}"
+        puts "Welcome back, #{user.name}\n\n"
     else #create the user and give them a how to play instructions method call instead of just going to menu
         user = User.create(name: name)
         how_to_play(user)
@@ -40,8 +40,8 @@ def menu(user)
     puts "  2. View Leaderboard"
     puts "  3. View your Records"
     puts "  4. Change your Username"
-    puts "  5. Delete your Username and Exit"
-    puts "To exit the game, enter EXIT.\n\n"
+    puts "  5. Delete your Username and Exit\n\n"
+    puts "To exit the game, enter " + "EXIT\n\n".red
     print ">> "
 
     input = gets.chomp
@@ -67,13 +67,6 @@ def menu(user)
         when "exit"
             system('clear')
             end_program
-            break
-        when "choosemyownword"
-            puts "Pick your own word\n\n"
-            print ">> "
-            word = gets.chomp
-            current_sesh = GameSession.create(user_id: user.id)
-            current_sesh.start_game(word)
             break
         else
             puts "Error, #{input} is not 1-5, try again"
@@ -229,11 +222,12 @@ end
 # only called from when a new user is created, to tell them how to save the dino
 def how_to_play(user)
     puts "Welcome, #{user.name}!\n\n".blue + "Here's a quick rundown on how to play:\n\n"
-    puts "The goal of the game is to guess all letters of the puzzle word shown in the box."
+    puts "The goal of the game is to guess all letters (or the word) of the puzzle word shown in the box."
     puts "If the guess is wrong, the asteroid will get closer to your Dino!"
-    puts "Type in "+ "HINT ".green + "to get the hint to the puzzle word, which will be a synonym or definition of the word."
+    puts "Type in " + "SOLVE ".blue + "to guess a word."
+    puts "Type in " + "HINT ".green + "to get the hint to the puzzle word, which will be a synonym or definition of the word."
     puts "Using the HINT will advance the asteroid!"
-    puts "You lose the game when the asteroid stikes the dino. :("
+    puts "You lose the game when the asteroid stikes the dino. :(\n\n"
     puts "Ready?\n\n\n"
 end
 # prints the table and formats it for the leaderboard so that it is table like and aligned

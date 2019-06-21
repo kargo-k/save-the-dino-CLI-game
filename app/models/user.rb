@@ -2,12 +2,15 @@ class User < ActiveRecord::Base
     belongs_to :gamesession
     #Updates the user that calls this methods name to the new input unless that input is exit
     def update_username
-        puts "Choose your new name: "
-        puts "To return to menu, enter EXIT.\n\n"
+        puts "\n\nChoose your new name: \n"
+        puts "To return to menu, enter " + "EXIT\n\n".red
         print ">> "
 
         newname = gets.chomp
-        if newname.downcase == "exit"
+        if User.all.any? {|user| user.name.downcase == newname.downcase}
+            puts "\n\nThat name already exists.\n"
+            self.update_username
+        elsif newname.downcase == "exit"
             menu(self)
         else
             self.name = newname
@@ -48,10 +51,19 @@ class User < ActiveRecord::Base
             wins[i] ? h[true] << words[i].green : h[false] << words[i].red
         end
         puts "Puzzles Won".green.underline
-        puts h[true]
-        puts "\n"
+        if h[true].empty? 
+            puts "(no puzzles won)".black
+        else
+            puts h[true]
+        end
+        puts "\n\n"
+        
         puts "Puzzles Lost".red.underline
-        puts h[false]
+        if h[false].empty?
+            puts "(no puzzles lost)".black
+        else
+            puts h[false]
+        end
         puts "\n\n\n"
     end
     #prints a table showing only the user that is passed in and their stats
